@@ -32,12 +32,12 @@ func (c *CmdGo) IsInvalid() (bool, error) {
 		return true, fmt.Errorf("必须输入端口(0-65535)")
 	}
 	if action == "hot" && c.ParamList["-v"] == "" {
-		return true, fmt.Errorf("参数不合法")
+		return true, fmt.Errorf("热更所需参数有误")
 	}
 	if action != "" {
 		return false, nil
 	}
-	return true, fmt.Errorf("参数不合法")
+	return true, fmt.Errorf("非法参数")
 }
 
 func (c *CmdGo) Run() error{
