@@ -17,7 +17,6 @@ func (c *CmdGo) Args(args []string) bool {
 			}
 		default:
 			c.ParamList[key] = value
-			fmt.Println(key, value)
 		}
 	}
 	return false
