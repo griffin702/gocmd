@@ -1,6 +1,9 @@
 package controllers
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type CmdGo struct {
 	ParamList		map[string]string
@@ -24,6 +27,10 @@ func (c *CmdGo) Args(args []string) bool {
 
 func (c *CmdGo) IsInvalid() (bool, error) {
 	action := c.ParamList["-a"]
+	port, err := strconv.Atoi(c.ParamList["-p"])
+	if err != nil || port < 0 || port > 65535 {
+		return true, fmt.Errorf("必须输入端口(0-65535)")
+	}
 	if action == "hot" && c.ParamList["-v"] == "" {
 		return true, fmt.Errorf("参数不合法")
 	}
@@ -37,8 +44,9 @@ func (c *CmdGo) Run() error{
 	if ok, err := c.IsInvalid(); ok { return err }
 	action := c.ParamList["-a"]
 	ver := c.ParamList["-v"]
+	port := c.ParamList["-p"]
 	worker := &Worker{}
-	worker.Url = "http://127.0.0.1:10009/gocmd"
+	worker.Url = fmt.Sprintf("http://127.0.0.1:%s/gocmd", port)
 	worker.Password = "321321"
 	worker.Action = action
 	worker.Ver = ver
