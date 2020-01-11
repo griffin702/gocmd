@@ -18,7 +18,6 @@ func (c *SaveAction) GetName() string {
 
 func (c *SaveAction) GetParams(params map[string]string) {
 	c.Name = params["-a"]
-	fmt.Println(c.Name)
 	if port, err := strconv.Atoi(params["-p"]); err == nil {
 		c.Port = port
 	}
