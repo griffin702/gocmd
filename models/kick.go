@@ -23,14 +23,18 @@ func (c *KickAction) GetParams(params map[string]string) {
 	}
 }
 
+func (c *KickAction) IsHope() bool {
+	if c.Name == "kick" {
+		return true
+	}
+	return false
+}
+
 func (c *KickAction) CheckParams() error {
 	if c.Port <= 0 || c.Port > 65535 {
 		return fmt.Errorf("检查端口(必须在0-65535之间)")
 	}
-	if c.Name == "kick" {
-		return nil
-	}
-	return fmt.Errorf("非法参数")
+	return nil
 }
 
 func (c *KickAction) JoinPayload() *strings.Reader {

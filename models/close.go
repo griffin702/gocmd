@@ -24,14 +24,18 @@ func (c *CloseAction) GetParams(params map[string]string) {
 	}
 }
 
+func (c *CloseAction) IsHope() bool {
+	if c.Name == "close" {
+		return true
+	}
+	return false
+}
+
 func (c *CloseAction) CheckParams() error {
 	if c.Port <= 0 || c.Port > 65535 {
 		return fmt.Errorf("检查端口(必须在0-65535之间)")
 	}
-	if c.Name == "close" {
-		return nil
-	}
-	return fmt.Errorf("非法参数")
+	return nil
 }
 
 func (c *CloseAction) JoinPayload() *strings.Reader {

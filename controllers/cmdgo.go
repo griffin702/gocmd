@@ -33,6 +33,8 @@ func (c *CmdGo) RegistAction() {
 	c.ActionList = &[]Action{
 		new(models.KickAction),
 		new(models.SaveAction),
+		new(models.CloseAction),
+		new(models.HotAction),
 	}
 }
 
@@ -54,12 +56,14 @@ func (c *CmdGo) Run() error {
 	c.RegistAction()
 	for _, action := range *c.ActionList {
 		action.GetParams(c.ParamList)
-		if err := action.CheckParams(); err != nil {
-			return err
-		}
-		_, err := c.SendRequest(action.JoinUrl(), action.JoinPayload())
-		if err != nil {
-			return fmt.Errorf("发送[%s]请求>>Error：%s", action.GetName(), err.Error())
+		if action.IsHope() {
+			if err := action.CheckParams(); err != nil {
+				return err
+			}
+			_, err := c.SendRequest(action.JoinUrl(), action.JoinPayload())
+			if err != nil {
+				return fmt.Errorf("发送[%s]请求>>Error：%s", action.GetName(), err.Error())
+			}
 		}
 	}
 	return nil

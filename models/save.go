@@ -18,19 +18,24 @@ func (c *SaveAction) GetName() string {
 
 func (c *SaveAction) GetParams(params map[string]string) {
 	c.Name = params["-a"]
+	fmt.Println(c.Name)
 	if port, err := strconv.Atoi(params["-p"]); err == nil {
 		c.Port = port
 	}
+}
+
+func (c *SaveAction) IsHope() bool {
+	if c.Name == "save" {
+		return true
+	}
+	return false
 }
 
 func (c *SaveAction) CheckParams() error {
 	if c.Port <= 0 || c.Port > 65535 {
 		return fmt.Errorf("检查端口(必须在0-65535之间)")
 	}
-	if c.Name == "save" {
-		return nil
-	}
-	return fmt.Errorf("非法参数")
+	return nil
 }
 
 func (c *SaveAction) JoinPayload() *strings.Reader {
