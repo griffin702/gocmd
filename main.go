@@ -11,9 +11,8 @@ func main() {
 	app := controllers.App
 	argNum := len(os.Args)
 	if argNum > 1 {
-		if isHelp := app.Args(os.Args); isHelp {
-			return
-		}
+		app.ParseArgs(os.Args)
+		if app.IsHelp { return }
 		if err := app.Run(); err != nil {
 			fmt.Println(err.Error())
 		}

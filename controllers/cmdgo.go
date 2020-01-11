@@ -2,81 +2,65 @@ package controllers
 
 import (
 	"fmt"
-	"strconv"
+	"gocmd/models"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
 type CmdGo struct {
 	ParamList		map[string]string
+	ActionList		*[]Action
+	IsHelp			bool
 }
 
-func (c *CmdGo) Args(args []string) bool {
+func (c *CmdGo) ParseArgs(args []string) {
 	for i := 1; i < len(args); i++ {
 		key, value := args[i][:2], args[i][2:]
 		switch key {
 		case "-h":
 			if len(key) == 2 && i == 1 {
 				fmt.Println("帮助")
-				return true
+				c.IsHelp = true
 			}
 		default:
 			c.ParamList[key] = value
 		}
 	}
-	return false
 }
 
-func (c *CmdGo) IsInvalid() (bool, error) {
-	action := c.ParamList["-a"]
-	port, err := strconv.Atoi(c.ParamList["-p"])
-	if err != nil || port < 0 || port > 65535 {
-		return true, fmt.Errorf("必须输入端口(0-65535)")
+func (c *CmdGo) RegistAction() {
+	c.ActionList = &[]Action{
+		new(models.KickAction),
+		new(models.SaveAction),
 	}
-	if action == "hot" && c.ParamList["-v"] == "" {
-		return true, fmt.Errorf("热更所需参数有误")
-	}
-	if action != "" {
-		return false, nil
-	}
-	return true, fmt.Errorf("非法参数")
 }
 
-func (c *CmdGo) Run() error{
-	if ok, err := c.IsInvalid(); ok { return err }
-	action := c.ParamList["-a"]
-	ver := c.ParamList["-v"]
-	port := c.ParamList["-p"]
-	worker := &Worker{}
-	worker.Url = fmt.Sprintf("http://127.0.0.1:%s/gocmd", port)
-	worker.Password = "321321"
-	worker.Action = action
-	worker.Ver = ver
-	switch action {
-	case "kick":
-		_, err := worker.SendRequest()
-		if err != nil {
-			fmt.Println(err.Error())
+func (c *CmdGo) SendRequest(url string, payload *strings.Reader) (num int, err error) {
+	req, _ := http.NewRequest("POST", url, payload)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
+	fmt.Println(req.URL, payload)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return 0, err
+	}
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(string(body))
+	return
+}
+
+func (c *CmdGo) Run() error {
+	c.RegistAction()
+	for _, action := range *c.ActionList {
+		action.GetParams(c.ParamList)
+		if err := action.CheckParams(); err != nil {
+			return err
 		}
-		fmt.Println("踢人动作返回消息")
-	case "save":
-		_, err := worker.SendRequest()
+		_, err := c.SendRequest(action.JoinUrl(), action.JoinPayload())
 		if err != nil {
-			fmt.Println(err.Error())
+			return fmt.Errorf("发送[%s]请求>>Error：%s", action.GetName(), err.Error())
 		}
-		fmt.Println("保存动作返回消息")
-	case "close":
-		_, err := worker.SendRequest()
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		fmt.Println("关服动作返回消息")
-	case "hot":
-		_, err := worker.SendRequest()
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		fmt.Println("热更动作返回消息")
-	default:
-		return fmt.Errorf("参数不合法")
 	}
 	return nil
 }
