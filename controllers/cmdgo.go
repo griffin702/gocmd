@@ -15,13 +15,21 @@ type CmdGo struct {
 }
 
 func (c *CmdGo) ParseArgs(args []string) {
+	firstArg := args[1][2:]
 	for i := 1; i < len(args); i++ {
 		key, value := args[i][:2], args[i][2:]
 		switch key {
 		case "-h":
-			if len(key) == 2 && i == 1 {
-				fmt.Println("帮助")
-				c.IsHelp = true
+			c.ParamList = make(map[string]string)
+			help := models.Help{}
+			help.New()
+			c.IsHelp = true
+			if i == 1 {
+				help.ShowContent("help")
+			} else if i == 2 {
+				help.ShowContent(firstArg)
+			} else {
+				fmt.Println("帮助使用不正确")
 			}
 		default:
 			c.ParamList[key] = value
