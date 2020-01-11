@@ -27,7 +27,7 @@ func (c *SaveAction) CheckParams() error {
 	if c.Port <= 0 || c.Port > 65535 {
 		return fmt.Errorf("检查端口(必须在0-65535之间)")
 	}
-	if c.Name == "kick" {
+	if c.Name == "save" {
 		return nil
 	}
 	return fmt.Errorf("非法参数")
