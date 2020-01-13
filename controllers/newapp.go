@@ -5,11 +5,7 @@ var (
 )
 
 func newApp() (app *CmdGo) {
-	app = &CmdGo{
-		ParamList: map[string]string{
-			"-a": "",
-			"-v": "",
-		},
-	}
+	app = New()
+	app.RegistAction()
 	return
 }

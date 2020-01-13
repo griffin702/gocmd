@@ -14,6 +14,34 @@ type CmdGo struct {
 	IsHelp			bool
 }
 
+type Action interface {
+	GetName()								string
+	GetParams(params map[string]string)
+	IsHope()								bool
+	CheckParams()							error
+	JoinPayload()							*strings.Reader
+	JoinUrl()								string
+}
+
+func New() *CmdGo {
+	return &CmdGo{
+		ParamList: map[string]string{
+			"-a": "",
+			"-p": "",
+			"-v": "",
+		},
+	}
+}
+
+func (c *CmdGo) RegistAction() {
+	c.ActionList = &[]Action{
+		new(models.KickAction),
+		new(models.SaveAction),
+		new(models.CloseAction),
+		new(models.HotAction),
+	}
+}
+
 func (c *CmdGo) ParseArgs(args []string) {
 	firstArg := args[1][2:]
 	for i := 1; i < len(args); i++ {
@@ -37,15 +65,6 @@ func (c *CmdGo) ParseArgs(args []string) {
 	}
 }
 
-func (c *CmdGo) RegistAction() {
-	c.ActionList = &[]Action{
-		new(models.KickAction),
-		new(models.SaveAction),
-		new(models.CloseAction),
-		new(models.HotAction),
-	}
-}
-
 func (c *CmdGo) SendRequest(url string, payload *strings.Reader) (num int, err error) {
 	req, _ := http.NewRequest("POST", url, payload)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
@@ -61,7 +80,6 @@ func (c *CmdGo) SendRequest(url string, payload *strings.Reader) (num int, err e
 }
 
 func (c *CmdGo) Run() error {
-	c.RegistAction()
 	for _, action := range *c.ActionList {
 		action.GetParams(c.ParamList)
 		if action.IsHope() {
