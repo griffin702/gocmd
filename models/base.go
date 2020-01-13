@@ -1,5 +1,9 @@
 package models
 
+import "gitee.com/griffin702/services/tool"
+
+var tools = tool.Tools
+
 const (
 	URL = "http://127.0.0.1:%d/gocmd"
 	Password = "321321"
