@@ -9,9 +9,9 @@ var (
 	App = newApp()
 )
 
-func newApp() (app *services.CmdGo) {
-	app = services.New()
-	app.RegistAction([]services.Action{
+func newApp() (app *Gocmd.CmdGo) {
+	app = Gocmd.New()
+	app.RegistAction([]Gocmd.Action{
 		new(models.KickAction),
 		new(models.SaveAction),
 		new(models.CloseAction),
