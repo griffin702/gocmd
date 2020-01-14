@@ -10,7 +10,6 @@ type CloseAction struct {
 	Name			string
 	Port			int
 	Sign			string
-	Status			int
 }
 
 func (c *CloseAction) GetName() string {

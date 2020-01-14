@@ -11,7 +11,6 @@ type HotAction struct {
 	Port			int
 	Version			string
 	Sign			string
-	Status			int
 }
 
 func (c *HotAction) GetName() string {
