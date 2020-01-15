@@ -19,4 +19,7 @@ func (c *Help) New() {
 func (c *Help) ShowContent(name string) {
 	content := *c.Content
 	fmt.Println(content[name])
+	if content[name] == "" {
+		fmt.Println("帮助使用不正确")
+	}
 }
