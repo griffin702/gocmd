@@ -36,8 +36,7 @@ func New() *CmdGo {
 func (c *CmdGo) RegistAction() {
 	c.ActionList = &[]Action{
 		new(models.KickAction),
-		new(models.SaveAction),
-		new(models.CloseAction),
+		new(models.SaveCloseAction),
 		new(models.HotAction),
 	}
 }

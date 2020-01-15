@@ -10,8 +10,7 @@ func (c *Help) New() {
 	c.Content = &map[string]string{
 		"help": helpStr,
 		"kick": kickStr,
-		"save": saveStr,
-		"close": closeStr,
+		"saveclose": saveCloseStr,
 		"hot": hotStr,
 	}
 }
