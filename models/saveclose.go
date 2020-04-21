@@ -7,9 +7,9 @@ import (
 )
 
 type SaveCloseAction struct {
-	Name			string
-	Port			int
-	Sign			string
+	Name string
+	Port int
+	Sign string
 }
 
 func (c *SaveCloseAction) GetName() string {
@@ -17,8 +17,8 @@ func (c *SaveCloseAction) GetName() string {
 }
 
 func (c *SaveCloseAction) GetParams(params map[string]string) {
-	c.Name = params["-a"]
-	if port, err := strconv.Atoi(params["-p"]); err == nil {
+	c.Name = params["a"]
+	if port, err := strconv.Atoi(params["p"]); err == nil {
 		c.Port = port
 	}
 }

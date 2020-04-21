@@ -7,9 +7,9 @@ import (
 )
 
 type KickAction struct {
-	Name			string
-	Port			int
-	Sign			string
+	Name string
+	Port int
+	Sign string
 }
 
 func (c *KickAction) GetName() string {
@@ -17,8 +17,8 @@ func (c *KickAction) GetName() string {
 }
 
 func (c *KickAction) GetParams(params map[string]string) {
-	c.Name = params["-a"]
-	if port, err := strconv.Atoi(params["-p"]); err == nil {
+	c.Name = params["a"]
+	if port, err := strconv.Atoi(params["p"]); err == nil {
 		c.Port = port
 	}
 }

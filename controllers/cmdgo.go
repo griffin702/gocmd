@@ -1,36 +1,61 @@
 package controllers
 
 import (
+	"flag"
 	"fmt"
 	"gocmd/models"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
+var (
+	help    bool
+	action  string
+	port    string
+	version string
+)
+
+func init() {
+	flag.BoolVar(&help, "h", false, "查看帮助")
+	flag.StringVar(&action, "a", "save", "`action`：需要进行的操作")
+	flag.StringVar(&port, "p", "10006", "`port`：指定请求端口")
+	flag.StringVar(&version, "v", "", "`hot-version`：热更版本号")
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, `欢迎使用GOCMD
+Usage: gocmd [-a action] [-p port] [-v hot-version]
+
+Options:
+`)
+		flag.PrintDefaults()
+	}
+}
+
 type CmdGo struct {
-	ParamList		map[string]string
-	ActionList		*[]Action
-	IsHelp			bool
+	ParamList  map[string]string
+	ActionList *[]Action
+	IsHelp     bool
 }
 
 type Action interface {
-	GetName()								string
+	GetName() string
 	GetParams(params map[string]string)
-	IsHope()								bool
-	CheckParams()							error
-	JoinPayload()							*strings.Reader
-	JoinUrl()								string
+	IsHope() bool
+	CheckParams() error
+	JoinPayload() *strings.Reader
+	JoinUrl() string
 }
 
 func New() *CmdGo {
-	return &CmdGo{
-		ParamList: map[string]string{
-			"-a": "",
-			"-p": "",
-			"-v": "",
-		},
-	}
+	cmdGo := new(CmdGo)
+	cmdGo.IsHelp = help
+	cmdGo.ParamList = make(map[string]string)
+	cmdGo.ParamList["a"] = action
+	cmdGo.ParamList["p"] = port
+	cmdGo.ParamList["v"] = version
+	cmdGo.RegistAction()
+	return cmdGo
 }
 
 func (c *CmdGo) RegistAction() {
@@ -38,29 +63,6 @@ func (c *CmdGo) RegistAction() {
 		new(models.KickAction),
 		new(models.SaveCloseAction),
 		new(models.HotAction),
-	}
-}
-
-func (c *CmdGo) ParseArgs(args []string) {
-	firstArg := args[1][2:]
-	for i := 1; i < len(args); i++ {
-		key, value := args[i][:2], args[i][2:]
-		switch key {
-		case "-h":
-			c.ParamList = make(map[string]string)
-			help := models.Help{}
-			help.New()
-			c.IsHelp = true
-			if i == 1 {
-				help.ShowContent("help")
-			} else if i == 2 {
-				help.ShowContent(firstArg)
-			} else {
-				fmt.Println("帮助使用不正确")
-			}
-		default:
-			c.ParamList[key] = value
-		}
 	}
 }
 

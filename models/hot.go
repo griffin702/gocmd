@@ -7,10 +7,10 @@ import (
 )
 
 type HotAction struct {
-	Name			string
-	Port			int
-	Version			string
-	Sign			string
+	Name    string
+	Port    int
+	Version string
+	Sign    string
 }
 
 func (c *HotAction) GetName() string {
@@ -18,11 +18,11 @@ func (c *HotAction) GetName() string {
 }
 
 func (c *HotAction) GetParams(params map[string]string) {
-	c.Name = params["-a"]
-	if port, err := strconv.Atoi(params["-p"]); err == nil {
+	c.Name = params["a"]
+	if port, err := strconv.Atoi(params["p"]); err == nil {
 		c.Port = port
 	}
-	c.Version = params["-v"]
+	c.Version = params["v"]
 }
 
 func (c *HotAction) IsHope() bool {
