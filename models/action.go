@@ -8,7 +8,7 @@ import (
 
 const (
 	SecretKey = "321321"
-	BaseURL   = "http://127.0.0.1:%d/GoCMD?%s"
+	BaseURL   = "http://%s:%d/GoCMD?%s"
 )
 
 const (

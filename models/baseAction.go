@@ -7,6 +7,7 @@ import (
 
 type BaseAction struct {
 	Name     string
+	Host     string
 	Port     int
 	ServerID int
 }
@@ -24,6 +25,9 @@ func (c *BaseAction) GetAction(action string) (Action, error) {
 }
 
 func (c *BaseAction) GetParams(params map[string]interface{}) {
+	if host, ok := params["h"].(string); ok {
+		c.Host = host
+	}
 	if name, ok := params["a"].(string); ok {
 		c.Name = name
 	}
@@ -51,5 +55,5 @@ func (c *BaseAction) JoinPayload() *strings.Reader {
 }
 
 func (c *BaseAction) JoinUrl() (string, string) {
-	return "get", fmt.Sprintf(BaseURL, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, actionTypeMap[c.Name][1], Md5(SecretKey)))
+	return "get", fmt.Sprintf(BaseURL, c.Host, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, actionTypeMap[c.Name][1], Md5(SecretKey)))
 }

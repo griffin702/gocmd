@@ -8,23 +8,26 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 var (
 	help     bool
+	host     string
 	action   string
 	port     int
 	serverId int
 )
 
 func init() {
-	flag.BoolVar(&help, "h", false, "查看帮助")
+	flag.BoolVar(&help, "help", false, "查看帮助")
+	flag.StringVar(&host, "h", "127.0.0.1", "`host`：指定服务器IP")
 	flag.StringVar(&action, "a", "save", "`action`：需要进行的操作")
 	flag.IntVar(&port, "p", 0, "`port`：指定请求端口")
 	flag.IntVar(&serverId, "s", 0, "`serverId`：服务端ID")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, `欢迎使用GOCMD
-Usage: gocmd [-a action] [-p port] [-s serverId] [-h help]
+Usage: gocmd [-a action] [-p port] [-s serverId] [-help]
 
 Options:
 `)
@@ -42,6 +45,7 @@ func New() *CmdGo {
 	cmdGo := new(CmdGo)
 	cmdGo.IsHelp = help
 	cmdGo.ParamList = make(map[string]interface{})
+	cmdGo.ParamList["h"] = host
 	cmdGo.ParamList["a"] = action
 	cmdGo.ParamList["p"] = port
 	cmdGo.ParamList["s"] = serverId
@@ -56,12 +60,14 @@ func (c *CmdGo) RegistAction() {
 }
 
 func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num int, err error) {
-	req, _ := http.NewRequest(strings.ToUpper(method), url, nil)
-	if method == "post" {
+	m := strings.ToUpper(method)
+	req, _ := http.NewRequest(m, url, nil)
+	if m == "POST" {
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
 	}
 	fmt.Println(req.URL, payload)
-	res, err := http.DefaultClient.Do(req)
+	client := &http.Client{Timeout: 5 * time.Second}
+	res, err := client.Do(req)
 	if err != nil {
 		return 0, err
 	}
