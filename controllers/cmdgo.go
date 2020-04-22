@@ -62,7 +62,6 @@ func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num in
 	}
 	fmt.Println(req.URL, payload)
 	res, err := http.DefaultClient.Do(req)
-	fmt.Println("开始发送")
 	if err != nil {
 		return 0, err
 	}
