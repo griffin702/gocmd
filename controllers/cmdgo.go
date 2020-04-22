@@ -55,11 +55,14 @@ func (c *CmdGo) RegistAction() {
 	}
 }
 
-func (c *CmdGo) SendRequest(url string, payload *strings.Reader) (num int, err error) {
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
+func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num int, err error) {
+	req, _ := http.NewRequest(strings.ToUpper(method), url, nil)
+	if method == "post" {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
+	}
 	fmt.Println(req.URL, payload)
 	res, err := http.DefaultClient.Do(req)
+	fmt.Println("开始发送")
 	if err != nil {
 		return 0, err
 	}
@@ -78,7 +81,8 @@ func (c *CmdGo) Run() (err error) {
 	if err = c.Action.CheckParams(); err != nil {
 		return
 	}
-	_, err = c.SendRequest(c.Action.JoinUrl(), c.Action.JoinPayload())
+	method, url := c.Action.JoinUrl()
+	_, err = c.SendRequest(method, url, c.Action.JoinPayload())
 	if err != nil {
 		return fmt.Errorf("发送[%s]请求>>Error：%s", c.Action.GetName(), err.Error())
 	}

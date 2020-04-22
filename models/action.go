@@ -8,7 +8,7 @@ import (
 
 const (
 	SecretKey = "321321"
-	BaseURL   = "http://127.0.0.1:%d/GoCMD?%s"
+	BaseURL   = "http://47.99.150.139:%d/GoCMD?%s"
 )
 
 const (
@@ -16,10 +16,10 @@ const (
 )
 
 const (
-	KickType = iota
-	SaveType
-	CloseType
-	HotType
+	CloseType = 1
+	KickType  = 2
+	HotType   = 3
+	SaveType  = 4
 )
 
 var (
@@ -42,7 +42,7 @@ type Action interface {
 	GetParams(params map[string]interface{})
 	CheckParams() error
 	JoinPayload() *strings.Reader
-	JoinUrl() string
+	JoinUrl() (string, string)
 }
 
 type Actions []Action
@@ -80,6 +80,6 @@ func (c Actions) JoinPayload() *strings.Reader {
 	return nil
 }
 
-func (c Actions) JoinUrl() string {
-	return ""
+func (c Actions) JoinUrl() (string, string) {
+	return "", ""
 }
