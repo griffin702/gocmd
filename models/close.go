@@ -50,5 +50,5 @@ func (c *CloseAction) JoinPayload() *strings.Reader {
 }
 
 func (c *CloseAction) JoinUrl() string {
-	return fmt.Sprintf(URL, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, CloseType, Md5([]byte(SecretKey))))
+	return fmt.Sprintf(URL, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, CloseType, Md5(SecretKey)))
 }
