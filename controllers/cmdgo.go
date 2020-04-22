@@ -49,11 +49,11 @@ func New() *CmdGo {
 	cmdGo.ParamList["a"] = action
 	cmdGo.ParamList["p"] = port
 	cmdGo.ParamList["s"] = serverId
-	cmdGo.RegistAction()
+	cmdGo.ActionRegister()
 	return cmdGo
 }
 
-func (c *CmdGo) RegistAction() {
+func (c *CmdGo) ActionRegister() {
 	c.Action = models.Actions{
 		new(models.BaseAction),
 	}
