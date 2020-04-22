@@ -5,24 +5,24 @@ import (
 	"strings"
 )
 
-type HotAction struct {
+type SaveAction struct {
 	Name     string
 	Port     int
 	ServerID int
 }
 
-func (c *HotAction) IsHope() bool {
-	if c.Name == "hot" {
+func (c *SaveAction) IsHope() bool {
+	if c.Name == "save" {
 		return true
 	}
 	return false
 }
 
-func (c *HotAction) GetName() string {
+func (c *SaveAction) GetName() string {
 	return c.Name
 }
 
-func (c *HotAction) GetParams(params map[string]interface{}) {
+func (c *SaveAction) GetParams(params map[string]interface{}) {
 	if name, ok := params["a"].(string); ok {
 		c.Name = name
 	}
@@ -34,7 +34,7 @@ func (c *HotAction) GetParams(params map[string]interface{}) {
 	}
 }
 
-func (c *HotAction) CheckParams() error {
+func (c *SaveAction) CheckParams() error {
 	if c.Port <= 0 || c.Port > 65535 {
 		return fmt.Errorf("检查端口(必须在0-65535之间)")
 	}
@@ -44,11 +44,11 @@ func (c *HotAction) CheckParams() error {
 	return nil
 }
 
-func (c *HotAction) JoinPayload() *strings.Reader {
+func (c *SaveAction) JoinPayload() *strings.Reader {
 	//payload := strings.NewReader(fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, SaveType, Md5([]byte(SecretKey))))
 	return nil
 }
 
-func (c *HotAction) JoinUrl() string {
-	return fmt.Sprintf(URL, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, HotType, Md5([]byte(SecretKey))))
+func (c *SaveAction) JoinUrl() string {
+	return fmt.Sprintf(URL, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, SaveType, Md5([]byte(SecretKey))))
 }
