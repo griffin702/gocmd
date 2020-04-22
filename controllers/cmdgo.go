@@ -33,18 +33,9 @@ Options:
 }
 
 type CmdGo struct {
-	ParamList  map[string]interface{}
-	ActionList *[]Action
-	IsHelp     bool
-}
-
-type Action interface {
-	GetName() string
-	GetParams(params map[string]interface{})
-	IsHope() bool
-	CheckParams() error
-	JoinPayload() *strings.Reader
-	JoinUrl() string
+	ParamList map[string]interface{}
+	Action    models.Action
+	IsHelp    bool
 }
 
 func New() *CmdGo {
@@ -59,11 +50,8 @@ func New() *CmdGo {
 }
 
 func (c *CmdGo) RegistAction() {
-	c.ActionList = &[]Action{
-		new(models.KickAction),
-		new(models.SaveAction),
-		new(models.CloseAction),
-		new(models.HotAction),
+	c.Action = models.Actions{
+		new(models.BaseAction),
 	}
 }
 
@@ -81,18 +69,18 @@ func (c *CmdGo) SendRequest(url string, payload *strings.Reader) (num int, err e
 	return
 }
 
-func (c *CmdGo) Run() error {
-	for _, action := range *c.ActionList {
-		action.GetParams(c.ParamList)
-		if action.IsHope() {
-			if err := action.CheckParams(); err != nil {
-				return err
-			}
-			_, err := c.SendRequest(action.JoinUrl(), action.JoinPayload())
-			if err != nil {
-				return fmt.Errorf("发送[%s]请求>>Error：%s", action.GetName(), err.Error())
-			}
-		}
+func (c *CmdGo) Run() (err error) {
+	c.Action, err = c.Action.GetAction(action)
+	if err != nil {
+		return err
+	}
+	c.Action.GetParams(c.ParamList)
+	if err = c.Action.CheckParams(); err != nil {
+		return
+	}
+	_, err = c.SendRequest(c.Action.JoinUrl(), c.Action.JoinPayload())
+	if err != nil {
+		return fmt.Errorf("发送[%s]请求>>Error：%s", c.Action.GetName(), err.Error())
 	}
 	return nil
 }
