@@ -21,7 +21,7 @@ type VersionOptions struct {
 	Arch      string
 }
 
-var versionTemplate = `:
+var versionTemplate = `
  Version:      {{.Version}}
  Go version:   {{.GoVersion}}
  Built:        {{.BuildTime}}
