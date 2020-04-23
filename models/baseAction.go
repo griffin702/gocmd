@@ -25,11 +25,11 @@ func (c *BaseAction) GetAction(action string) (Action, error) {
 }
 
 func (c *BaseAction) GetParams(params map[string]interface{}) {
-	if host, ok := params["h"].(string); ok {
-		c.Host = host
-	}
 	if name, ok := params["a"].(string); ok {
 		c.Name = name
+	}
+	if host, ok := params["h"].(string); ok {
+		c.Host = host
 	}
 	if port, ok := params["p"].(int); ok {
 		c.Port = port

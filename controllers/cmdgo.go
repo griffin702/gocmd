@@ -1,54 +1,33 @@
 package controllers
 
 import (
-	"flag"
 	"fmt"
 	"gitee.com/griffin702/gocmd/models"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 )
 
-var (
-	help     bool
-	host     string
-	action   string
-	port     int
-	serverId int
-)
-
-func init() {
-	flag.BoolVar(&help, "help", false, "查看帮助")
-	flag.StringVar(&host, "h", "127.0.0.1", "`host`：指定服务器IP")
-	flag.StringVar(&action, "a", "save", "`action`：需要进行的操作")
-	flag.IntVar(&port, "p", 0, "`port`：指定请求端口")
-	flag.IntVar(&serverId, "s", 0, "`serverId`：服务端ID")
-	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, `欢迎使用GOCMD
-Usage: gocmd [-a action] [-p port] [-s serverId] [-help]
-
-Options:
-`)
-		flag.PrintDefaults()
-	}
+type ActionFlags struct {
+	Action   string
+	Host     string
+	Port     int
+	ServerID int
 }
 
 type CmdGo struct {
 	ParamList map[string]interface{}
 	Action    models.Action
-	IsHelp    bool
 }
 
-func New() *CmdGo {
+func New(af *ActionFlags) *CmdGo {
 	cmdGo := new(CmdGo)
-	cmdGo.IsHelp = help
 	cmdGo.ParamList = make(map[string]interface{})
-	cmdGo.ParamList["h"] = host
-	cmdGo.ParamList["a"] = action
-	cmdGo.ParamList["p"] = port
-	cmdGo.ParamList["s"] = serverId
+	cmdGo.ParamList["a"] = af.Action
+	cmdGo.ParamList["h"] = af.Host
+	cmdGo.ParamList["p"] = af.Port
+	cmdGo.ParamList["s"] = af.ServerID
 	cmdGo.ActionRegister()
 	return cmdGo
 }
@@ -77,7 +56,7 @@ func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num in
 	return
 }
 
-func (c *CmdGo) Run() (err error) {
+func (c *CmdGo) Run(action string) (err error) {
 	c.Action, err = c.Action.GetAction(action)
 	if err != nil {
 		return err
