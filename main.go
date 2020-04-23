@@ -29,9 +29,9 @@ func main() {
 		&cli.StringFlag{
 			Name:        "action",
 			Aliases:     []string{"a"},
+			Value:       "save",
 			Usage:       "指定操作`行为`",
 			Destination: &af.Action,
-			Required:    true,
 		},
 		&cli.StringFlag{
 			Name:        "host",
@@ -45,14 +45,12 @@ func main() {
 			Aliases:     []string{"p"},
 			Usage:       "指定服务器`端口`",
 			Destination: &af.Port,
-			Required:    true,
 		},
 		&cli.IntFlag{
 			Name:        "server",
 			Aliases:     []string{"s"},
 			Usage:       "指定服务器`ID`",
 			Destination: &af.ServerID,
-			Required:    true,
 		},
 	}
 	app.Action = func(ctx *cli.Context) (err error) {
