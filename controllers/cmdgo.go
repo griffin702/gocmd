@@ -3,7 +3,7 @@ package controllers
 import (
 	"flag"
 	"fmt"
-	"gocmd/models"
+	"gitee.com/griffin702/gocmd/models"
 	"io/ioutil"
 	"net/http"
 	"os"

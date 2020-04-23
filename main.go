@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"gocmd/controllers"
+	"gitee.com/griffin702/gocmd/controllers"
 )
 
 func main() {
