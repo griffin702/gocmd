@@ -25,8 +25,7 @@ var versionTemplate = `
  Version:      {{.Version}}
  Go version:   {{.GoVersion}}
  Built:        {{.BuildTime}}
- OS/Arch:      {{.Os}}/{{.Arch}}
- `
+ OS/Arch:      {{.Os}}/{{.Arch}}`
 
 func getVersion() string {
 	var doc bytes.Buffer
