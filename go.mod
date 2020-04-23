@@ -1,4 +1,4 @@
-module gocmd
+module gitee.com/griffin702/gocmd
 
 go 1.13
 
