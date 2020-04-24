@@ -2,7 +2,6 @@ package main
 
 import (
 	"gitee.com/griffin702/gocmd/commands"
-	"gitee.com/griffin702/gocmd/models/flags"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -26,8 +25,7 @@ func main() {
 		Aliases: []string{"v"},
 		Usage:   "GoCMD Version",
 	}
-	var f flags.Flags
-	app.Commands = commands.InitCommands(&f)
+	app.Commands = commands.InitCommands()
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Print(err)

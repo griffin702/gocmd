@@ -5,7 +5,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func InitCommands(f *flags.Flags) []*cli.Command {
+func InitCommands() []*cli.Command {
+	f := new(flags.Flags)
 	baseFlags := f.ToBaseFlags()
 	baseAction := BaseAction(f)
 	return []*cli.Command{
