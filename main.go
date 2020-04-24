@@ -11,7 +11,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "GoCMD"
-	app.Usage = "GoCMD运维工具集"
+	app.Usage = "运维工具集"
 	app.Version = getVersion()
 	app.Authors = []*cli.Author{{
 		Name:  "WuYun",
