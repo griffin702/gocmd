@@ -13,6 +13,10 @@ func main() {
 	app.Name = "GoCMD"
 	app.Usage = "GoCMD运维工具集"
 	app.Version = getVersion()
+	app.Authors = []*cli.Author{{
+		Name:  "WuYun",
+		Email: "117976509@qq.com",
+	}}
 	cli.HelpFlag = &cli.BoolFlag{
 		Name:  "help",
 		Usage: "查看帮助",

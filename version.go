@@ -2,13 +2,15 @@ package main
 
 import (
 	"bytes"
+	"gitee.com/griffin702/service/tools"
 	"runtime"
 	"text/template"
+	"time"
 )
 
 var (
-	Version   = "v1.0.2"
-	BuildTime = "2020/4/24"
+	Version   = "v1.0.4"
+	BuildTime = tools.Tools.TimeFormat(time.Now(), "Y-m-d H:i:s")
 )
 
 // VersionOptions include version
@@ -21,11 +23,7 @@ type VersionOptions struct {
 	Arch      string
 }
 
-var versionTemplate = `
- Version:      {{.Version}}
- Go version:   {{.GoVersion}}
- Built:        {{.BuildTime}}
- OS/Arch:      {{.Os}}/{{.Arch}}`
+var versionTemplate = `Version: {{.Version}} | Go version: {{.GoVersion}} | BuildTime: {{.BuildTime}} | OS/Arch: {{.Os}}/{{.Arch}}`
 
 func getVersion() string {
 	var doc bytes.Buffer

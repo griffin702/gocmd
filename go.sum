@@ -1,5 +1,5 @@
-gitee.com/griffin702/service v1.0.3 h1:QzNCQxxsDD1EsK5eRQcnE/LUkbJrUaJ4y0uAsbv64BM=
-gitee.com/griffin702/service v1.0.3/go.mod h1:ETE35qwBtWlmS/SuzeAsXjGrUl+G9QQaBrSGJ/BLwo8=
+gitee.com/griffin702/service v1.0.4 h1:T7rng9FvBj1FobE4kFw51Yb20uMsJnhnAyb4yiWAPu4=
+gitee.com/griffin702/service v1.0.4/go.mod h1:ETE35qwBtWlmS/SuzeAsXjGrUl+G9QQaBrSGJ/BLwo8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
