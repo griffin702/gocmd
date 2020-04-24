@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"gitee.com/griffin702/gocmd/controllers"
 	"gitee.com/griffin702/gocmd/models"
 	"github.com/urfave/cli/v2"
+	"log"
 	"os"
 )
 
@@ -60,6 +60,6 @@ func main() {
 	}
 	err := app.Run(os.Args)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Print(err)
 	}
 }
