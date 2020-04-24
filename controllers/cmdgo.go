@@ -9,25 +9,14 @@ import (
 	"time"
 )
 
-type ActionFlags struct {
-	Action   string
-	Host     string
-	Port     int
-	ServerID int
-}
-
 type CmdGo struct {
-	ParamList map[string]interface{}
-	Action    models.Action
+	Flags  *models.Flags
+	Action models.Action
 }
 
-func New(af *ActionFlags) *CmdGo {
+func New(flags *models.Flags) *CmdGo {
 	cmdGo := new(CmdGo)
-	cmdGo.ParamList = make(map[string]interface{})
-	cmdGo.ParamList["a"] = af.Action
-	cmdGo.ParamList["h"] = af.Host
-	cmdGo.ParamList["p"] = af.Port
-	cmdGo.ParamList["s"] = af.ServerID
+	cmdGo.Flags = flags
 	cmdGo.ActionRegister()
 	return cmdGo
 }
@@ -44,7 +33,6 @@ func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num in
 	if m == "POST" {
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
 	}
-	fmt.Println(req.URL, payload)
 	client := &http.Client{Timeout: 5 * time.Second}
 	res, err := client.Do(req)
 	if err != nil {
@@ -56,12 +44,12 @@ func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num in
 	return
 }
 
-func (c *CmdGo) Run(action string) (err error) {
-	c.Action, err = c.Action.GetAction(action)
+func (c *CmdGo) Run() (err error) {
+	c.Action, err = c.Action.GetAction(c.Flags.Action)
 	if err != nil {
 		return err
 	}
-	c.Action.GetParams(c.ParamList)
+	c.Action.InitFlags(c.Flags)
 	if err = c.Action.CheckParams(); err != nil {
 		return
 	}

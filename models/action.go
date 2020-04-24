@@ -6,6 +6,13 @@ import (
 	"strings"
 )
 
+type Flags struct {
+	Action   string
+	Host     string
+	Port     int
+	ServerID int
+}
+
 const (
 	SecretKey = "321321"
 	BaseURL   = "http://%s:%d/GoCMD?%s"
@@ -16,30 +23,27 @@ const (
 )
 
 const (
-	CloseType = 1
-	KickType  = 2
-	HotType   = 3
-	SaveType  = 4
+	_ = iota
+	CloseType
+	KickType
+	HotType
+	SaveType
 )
 
 var (
 	actionTypeMap = map[string][]int{
-		"kick":  {BaseActionType, KickType},
-		"save":  {BaseActionType, SaveType},
 		"close": {BaseActionType, CloseType},
+		"kick":  {BaseActionType, KickType},
 		"hot":   {BaseActionType, HotType},
+		"save":  {BaseActionType, SaveType},
 	}
 )
-
-func Md5(str string) string {
-	return tools.Tools.EncodeMD5(str)
-}
 
 type Action interface {
 	GetName() string
 	GetType() int
 	GetAction(action string) (Action, error)
-	GetParams(params map[string]interface{})
+	InitFlags(flags *Flags)
 	CheckParams() error
 	JoinPayload() *strings.Reader
 	JoinUrl() (string, string)
@@ -68,7 +72,7 @@ func (c Actions) GetAction(action string) (Action, error) {
 	return nil, fmt.Errorf("actionType error：%d", t)
 }
 
-func (c Actions) GetParams(params map[string]interface{}) {
+func (c Actions) InitFlags(flags *Flags) {
 	return
 }
 
@@ -82,4 +86,8 @@ func (c Actions) JoinPayload() *strings.Reader {
 
 func (c Actions) JoinUrl() (string, string) {
 	return "", ""
+}
+
+func Md5(str string) string {
+	return tools.Tools.EncodeMD5(str)
 }

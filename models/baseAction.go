@@ -24,19 +24,11 @@ func (c *BaseAction) GetAction(action string) (Action, error) {
 	return c, nil
 }
 
-func (c *BaseAction) GetParams(params map[string]interface{}) {
-	if name, ok := params["a"].(string); ok {
-		c.Name = name
-	}
-	if host, ok := params["h"].(string); ok {
-		c.Host = host
-	}
-	if port, ok := params["p"].(int); ok {
-		c.Port = port
-	}
-	if serverId, ok := params["s"].(int); ok {
-		c.ServerID = serverId
-	}
+func (c *BaseAction) InitFlags(flags *Flags) {
+	c.Name = flags.Action
+	c.Host = flags.Host
+	c.Port = flags.Port
+	c.ServerID = flags.ServerID
 }
 
 func (c *BaseAction) CheckParams() error {
