@@ -2,7 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"gitee.com/griffin702/gocmd/models"
+	"gitee.com/griffin702/gocmd/models/action"
+	"gitee.com/griffin702/gocmd/models/flags"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -10,11 +11,11 @@ import (
 )
 
 type CmdGo struct {
-	Flags  *models.Flags
-	Action models.Action
+	Flags  *flags.Flags
+	Action action.Action
 }
 
-func New(flags *models.Flags) *CmdGo {
+func New(flags *flags.Flags) *CmdGo {
 	cmdGo := new(CmdGo)
 	cmdGo.Flags = flags
 	cmdGo.ActionRegister()
@@ -22,8 +23,8 @@ func New(flags *models.Flags) *CmdGo {
 }
 
 func (c *CmdGo) ActionRegister() {
-	c.Action = models.Actions{
-		new(models.BaseAction),
+	c.Action = action.Actions{
+		new(action.BaseAction),
 	}
 }
 
@@ -45,7 +46,7 @@ func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num in
 }
 
 func (c *CmdGo) Run() (err error) {
-	c.Action, err = c.Action.GetAction(c.Flags.Action)
+	c.Action, err = c.Action.GetAction(c.Flags.Name)
 	if err != nil {
 		return err
 	}

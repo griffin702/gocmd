@@ -1,17 +1,11 @@
-package models
+package action
 
 import (
 	"fmt"
+	"gitee.com/griffin702/gocmd/models/flags"
 	"gitee.com/griffin702/service/tools"
 	"strings"
 )
-
-type Flags struct {
-	Action   string
-	Host     string
-	Port     int
-	ServerID int
-}
 
 const (
 	SecretKey = "321321"
@@ -43,7 +37,7 @@ type Action interface {
 	GetName() string
 	GetType() int
 	GetAction(action string) (Action, error)
-	InitFlags(flags *Flags)
+	InitFlags(flags *flags.Flags)
 	CheckParams() error
 	JoinPayload() *strings.Reader
 	JoinUrl() (string, string)
@@ -72,7 +66,7 @@ func (c Actions) GetAction(action string) (Action, error) {
 	return nil, fmt.Errorf("actionType error：%d", t)
 }
 
-func (c Actions) InitFlags(flags *Flags) {
+func (c Actions) InitFlags(flags *flags.Flags) {
 	return
 }
 

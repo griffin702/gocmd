@@ -1,15 +1,11 @@
 package main
 
 import (
-	"gitee.com/griffin702/gocmd/controllers"
-	"gitee.com/griffin702/gocmd/models"
+	"gitee.com/griffin702/gocmd/commands"
+	"gitee.com/griffin702/gocmd/models/flags"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
-)
-
-var (
-	flags models.Flags
 )
 
 func main() {
@@ -26,38 +22,8 @@ func main() {
 		Aliases: []string{"v"},
 		Usage:   "GoCMD Version",
 	}
-	app.Flags = []cli.Flag{
-		&cli.StringFlag{
-			Name:        "action",
-			Aliases:     []string{"a"},
-			Value:       "save",
-			Usage:       "指定操作`行为`",
-			Destination: &flags.Action,
-		},
-		&cli.StringFlag{
-			Name:        "host",
-			Aliases:     []string{"h"},
-			Value:       "127.0.0.1",
-			Usage:       "指定服务器`IP`地址",
-			Destination: &flags.Host,
-		},
-		&cli.IntFlag{
-			Name:        "port",
-			Aliases:     []string{"p"},
-			Usage:       "指定服务器`端口`",
-			Destination: &flags.Port,
-		},
-		&cli.IntFlag{
-			Name:        "server",
-			Aliases:     []string{"s"},
-			Usage:       "指定服务器`ID`",
-			Destination: &flags.ServerID,
-		},
-	}
-	app.Action = func(ctx *cli.Context) (err error) {
-		cmdGo := controllers.New(&flags)
-		return cmdGo.Run()
-	}
+	var f flags.Flags
+	app.Commands = commands.InitCommands(&f)
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Print(err)

@@ -1,7 +1,8 @@
-package models
+package action
 
 import (
 	"fmt"
+	"gitee.com/griffin702/gocmd/models/flags"
 	"strings"
 )
 
@@ -24,8 +25,8 @@ func (c *BaseAction) GetAction(action string) (Action, error) {
 	return c, nil
 }
 
-func (c *BaseAction) InitFlags(flags *Flags) {
-	c.Name = flags.Action
+func (c *BaseAction) InitFlags(flags *flags.Flags) {
+	c.Name = flags.Name
 	c.Host = flags.Host
 	c.Port = flags.Port
 	c.ServerID = flags.ServerID
