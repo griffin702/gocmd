@@ -2,7 +2,7 @@ package action
 
 import (
 	"fmt"
-	"gitee.com/griffin702/gocmd/models/flags"
+	"github.com/griffin702/gocmd/models/flags"
 	"strings"
 )
 

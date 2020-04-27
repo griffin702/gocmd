@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitee.com/griffin702/gocmd/commands"
+	"github.com/griffin702/gocmd/commands"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"

@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"gitee.com/griffin702/gocmd/models/action"
-	"gitee.com/griffin702/gocmd/models/flags"
+	"github.com/griffin702/gocmd/models/action"
+	"github.com/griffin702/gocmd/models/flags"
 	"io/ioutil"
 	"net/http"
 	"strings"

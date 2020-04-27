@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"gitee.com/griffin702/gocmd/controllers"
-	"gitee.com/griffin702/gocmd/models/flags"
+	"github.com/griffin702/gocmd/controllers"
+	"github.com/griffin702/gocmd/models/flags"
 	"github.com/urfave/cli/v2"
 )
 
