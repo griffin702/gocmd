@@ -14,5 +14,8 @@ func InitCommands() []*cli.Command {
 		{Name: "kick", Category: "BaseAction", Usage: "踢人操作", Flags: baseFlags, Action: baseAction},
 		{Name: "hot", Category: "BaseAction", Usage: "热更踢人操作", Flags: baseFlags, Action: baseAction},
 		{Name: "save", Category: "BaseAction", Usage: "保存数据操作", Flags: baseFlags, Action: baseAction},
+		//{Name: "mysql", Category: "MySQL", Usage: "数据上传", Flags: baseFlags, Action: baseAction},
 	}
 }
+
+// wmic process where caption="mysqld.exe" get executablepath /value
