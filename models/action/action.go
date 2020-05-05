@@ -9,7 +9,7 @@ import (
 
 const (
 	SecretKey = "321321"
-	BaseURL   = "http://%s:%d/GoCMD?%s"
+	BaseURL   = "http://%s:%d/GoCMD"
 )
 
 const (

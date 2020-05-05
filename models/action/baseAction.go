@@ -48,5 +48,6 @@ func (c *BaseAction) JoinPayload() *strings.Reader {
 }
 
 func (c *BaseAction) JoinUrl() (string, string) {
-	return "get", fmt.Sprintf(BaseURL, c.Host, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, actionTypeMap[c.Name][1], Md5(SecretKey)))
+	baseUrl := BaseURL + "?%s"
+	return "get", fmt.Sprintf(baseUrl, c.Host, c.Port, fmt.Sprintf("ServerID=%d&Opt=%d&Sign=%s", c.ServerID, actionTypeMap[c.Name][1], Md5(SecretKey)))
 }

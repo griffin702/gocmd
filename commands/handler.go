@@ -6,10 +6,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// 使用request请求服务端接口
 func BaseAction(f *flags.Flags) cli.ActionFunc {
 	return func(ctx *cli.Context) (err error) {
 		f.Name = ctx.Command.Name
-		cmdGo := controllers.New(f)
+		cmdGo := controllers.NewCmdGo(f)
 		return cmdGo.Run()
 	}
 }

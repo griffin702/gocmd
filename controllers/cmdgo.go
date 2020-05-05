@@ -15,7 +15,7 @@ type CmdGo struct {
 	Action action.Action
 }
 
-func New(flags *flags.Flags) *CmdGo {
+func NewCmdGo(flags *flags.Flags) *CmdGo {
 	cmdGo := new(CmdGo)
 	cmdGo.Flags = flags
 	cmdGo.ActionRegister()
@@ -30,7 +30,12 @@ func (c *CmdGo) ActionRegister() {
 
 func (c *CmdGo) SendRequest(method, url string, payload *strings.Reader) (num int, err error) {
 	m := strings.ToUpper(method)
-	req, _ := http.NewRequest(m, url, nil)
+	var req *http.Request
+	if payload == nil {
+		req, _ = http.NewRequest(m, url, nil)
+	} else {
+		req, _ = http.NewRequest(m, url, payload)
+	}
 	if m == "POST" {
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded; charset=gb2312")
 	}
